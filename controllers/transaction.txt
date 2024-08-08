@@ -1,0 +1,14 @@
+begin transaction
+
+try:
+    if source_account.balance >= amount:
+        source_account.balance -= amount
+        destination_account.balance += amount
+        log_transaction(source_account, destination_account, amount)
+        commit transaction
+    else:
+        raise InsufficientFundsError
+
+except (InsufficientFundsError, AnyOtherError):
+    rollback transaction
+    handle_error
